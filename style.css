@@ -1,0 +1,70 @@
+.btn {
+  display: flex;
+  font-family: "Roboto", sans-serif;
+  font-size: medium;
+  height: 60px;
+  width: 60px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 50%;
+  background-color: #ffa31a;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 0;
+}
+
+.btn.op {
+  background-color: #ffa31a;
+  color: whitesmoke;
+}
+
+.btn.func {
+  background-color: #686868;
+  color: whitesmoke;
+}
+
+.btn.num {
+  background-color: #303030;
+  color: whitesmoke;
+}
+
+.btn.zero {
+    display: flex;
+    justify-content: left;
+    width: 140px;
+    border-radius: 48px;
+    gap: 8px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: lightslategray;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: black;
+  width: 350px;
+  height: 700px;
+  border-radius: 40px;
+}
+
+.display {
+  display: flex;
+  height: 200px;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin: 12px 8px;
+  justify-content: center;
+}
