@@ -18,6 +18,7 @@
 .btn.op {
   background-color: #ffa31a;
   color: whitesmoke;
+  font-size: xx-large;
 }
 
 .btn.func {
@@ -32,10 +33,10 @@
 
 .btn.zero {
     display: flex;
-    justify-content: left;
     width: 140px;
     border-radius: 48px;
-    gap: 8px;
+    justify-content:flex-start;
+    padding-left: 24px;
 }
 
 body {
