@@ -21,95 +21,102 @@ const _0Btn = allBtns[16];
 const decBtn = allBtns[17];
 const eqBtn = allBtns[18];
 
-let enteredNum = 0;
-let currTotal = 0;
-let decimalMode = false;
-let divisor = 1;
+let enteredNum = "";
+let currTotal = "";
 
-const onNumBtn = (num) => {
-  if (!decimalMode) {
-    enteredNum = enteredNum * 10 + Number(num);
+const onNumBtn = (input) => {
+  enteredNum += input;
+  disp2.innerHTML = enteredNum;
+};
+
+const onDecBtn = (input) => {
+  if (!enteredNum.includes(".")) {
+    enteredNum += ".";
     disp2.innerHTML = enteredNum;
-  } else {
-    divisor /= 10;
-    enteredNum = enteredNum + +num * divisor;
-    disp2.innerHTML = enteredNum.toFixed(2);
-  }
-};
-
-const onClearBtn = () => {
-  enteredNum = 0;
-  currTotal = 0;
-  disp2.innerHTML = 0;
-  disp1.innerHTML = "";
-  decimalMode = false;
-  divisor = 1;
-};
-
-const onDeleteBtn = () => {
-  let num = enteredNum.toString();
-  enteredNum = Number(num.slice(0, -1));
-  disp2.innerHTML = enteredNum;
-};
-
-const onPercentBtn = () => {
-  enteredNum /= 100;
-  disp2.innerHTML = enteredNum;
-};
-
-const onEqBtn = () => {
-  if (disp1.innerHTML) {
-    const op = disp1.innerHTML.slice(-1);
-    onOpBtn(op);
-    disp2.innerHTML = currTotal;
-    disp1.innerHTML = 0;
   }
 };
 
 const onOpBtn = (op) => {
-  decimalMode = false;
-  if (op == "+") {
-    currTotal += enteredNum;
-    disp1.innerHTML = `${currTotal}${op}`;
-    enteredNum = 0;
-    disp2.innerHTML = 0;
-  }
-  else if (op == "-") {
-    currTotal -= enteredNum;
-    disp1.innerHTML = `${currTotal}${op}`;
-    enteredNum = 0;
-    disp2.innerHTML = 0;
-  }
-  else if (op == "*") {
-    currTotal *= enteredNum;
-    disp1.innerHTML = `${currTotal}${op}`;
-    enteredNum = 0;
-    disp2.innerHTML = 0;
-  }
-  else if (op == "/") {
-    if (enteredNum == 0) {
-        alert("Zero division error!!");
-        return;
-    };
-    currTotal /= enteredNum;
-    disp1.innerHTML = `${currTotal}${op}`;
-    enteredNum = 0;
-    disp2.innerHTML = 0;
+  if (disp2.innerHTML && disp1.innerHTML) {
+    enteredNum = +parseFloat(disp2.innerHTML).toFixed(2);
+    currTotal = +parseFloat(disp1.innerHTML.slice(0, -1)).toFixed(2);
+    const prevOp = disp1.innerHTML.slice(-1);
+    switch (prevOp) {
+      case "+":
+        currTotal += enteredNum;
+        break;
+      case "-":
+        currTotal -= enteredNum;
+        break;
+      case "*":
+        currTotal *= enteredNum;
+        break;
+      case "/":
+        currTotal /= enteredNum;
+        break;
+    }
+    currTotal = String(+parseFloat(currTotal).toFixed(2)) + op;
+    disp1.innerHTML = currTotal;
+    enteredNum = "";
+    disp2.innerHTML = enteredNum;
+  } else if (disp2.innerHTML && !disp1.innerHTML) {
+    enteredNum += op;
+    currTotal = enteredNum;
+    disp1.innerHTML = currTotal;
+    enteredNum = "";
+    disp2.innerHTML = enteredNum;
   }
 };
 
-const onDecBtn = () => {
-  disp2.innerHTML = enteredNum.toFixed(1);
-  decimalMode = true;
-  divisor = 1;
+const onEqBtn = () => {
+  if (disp1.innerHTML && disp2.innerHTML) {
+    enteredNum = +parseFloat(disp2.innerHTML).toFixed(2);
+    currTotal = +parseFloat(disp1.innerHTML.slice(0, -1)).toFixed(2);
+    const prevOp = disp1.innerHTML.slice(-1);
+    switch (prevOp) {
+      case "+":
+        enteredNum += currTotal;
+        break;
+      case "-":
+        enteredNum -= currTotal;
+        enteredNum *= -1;
+        break;
+      case "*":
+        enteredNum *= currTotal;
+        break;
+      case "/":
+        enteredNum /= currTotal;
+        enteredNum = enteredNum ** -1;
+        break;
+    }
+    enteredNum = String(+parseFloat(enteredNum).toFixed(2));
+    disp2.innerHTML = enteredNum;
+    currTotal = "";
+    disp1.innerHTML = currTotal;
+  } else if (disp1.innerHTML && !disp2.innerHTML) {
+    currTotal = disp1.innerHTML.slice(0, -1);
+    enteredNum = currTotal;
+    disp2.innerHTML = enteredNum;
+    currTotal = "";
+    disp1.innerHTML = currTotal;
+  }
 };
+
+const onClearBtn = () => {
+  enteredNum = "";
+  currTotal = "";
+  disp1.innerHTML = currTotal;
+  disp2.innerHTML = enteredNum;
+};
+
+
 
 acBtn.addEventListener("click", onClearBtn);
-delBtn.addEventListener("click", onDeleteBtn);
-percentBtn.addEventListener("click", onPercentBtn);
-// divBtn.addEventListener("click", onOpBtn.bind(this, "/"));
-// mulBtn.addEventListener("click", onOpBtn.bind(this, "*"));
-// subBtn.addEventListener("click", onOpBtn.bind(this, "-"));
+// delBtn.addEventListener("click", onDeleteBtn);
+// percentBtn.addEventListener("click", onPercentBtn);
+divBtn.addEventListener("click", onOpBtn.bind(this, "/"));
+mulBtn.addEventListener("click", onOpBtn.bind(this, "*"));
+subBtn.addEventListener("click", onOpBtn.bind(this, "-"));
 addBtn.addEventListener("click", onOpBtn.bind(this, "+"));
 decBtn.addEventListener("click", onDecBtn);
 eqBtn.addEventListener("click", onEqBtn);
