@@ -109,11 +109,24 @@ const onClearBtn = () => {
   disp2.innerHTML = enteredNum;
 };
 
+const onDeleteBtn = () => {
+  if (disp2.innerHTML) {
+    enteredNum = disp2.innerHTML.slice(0, -1);
+    disp2.innerHTML = enteredNum;
+  }
+};
+
+const onPercentBtn = () => {
+  if (disp2.innerHTML) {
+    enteredNum = String(+parseFloat(+enteredNum/100).toFixed(2));
+    disp2.innerHTML = enteredNum;
+  }
+};
 
 
 acBtn.addEventListener("click", onClearBtn);
-// delBtn.addEventListener("click", onDeleteBtn);
-// percentBtn.addEventListener("click", onPercentBtn);
+delBtn.addEventListener("click", onDeleteBtn);
+percentBtn.addEventListener("click", onPercentBtn);
 divBtn.addEventListener("click", onOpBtn.bind(this, "/"));
 mulBtn.addEventListener("click", onOpBtn.bind(this, "*"));
 subBtn.addEventListener("click", onOpBtn.bind(this, "-"));
