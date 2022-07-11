@@ -24,14 +24,16 @@ const eqBtn = allBtns[18];
 let enteredNum = 0;
 let currTotal = 0;
 let decimalMode = false;
+let divisor = 1;
 
 const onNumBtn = (num) => {
   if (!decimalMode) {
     enteredNum = enteredNum * 10 + Number(num);
     disp2.innerHTML = enteredNum;
   } else {
-    enteredNum = enteredNum + +num / 10;
-    disp2.innerHTML = enteredNum;
+    divisor /= 10;
+    enteredNum = enteredNum + +num * divisor;
+    disp2.innerHTML = enteredNum.toFixed(2);
   }
 };
 
@@ -41,10 +43,12 @@ const onClearBtn = () => {
   disp2.innerHTML = 0;
   disp1.innerHTML = "";
   decimalMode = false;
+  divisor = 1;
 };
 
 const onDeleteBtn = () => {
-  enteredNum = Math.trunc(enteredNum / 10);
+  let num = enteredNum.toString();
+  enteredNum = Number(num.slice(0, -1));
   disp2.innerHTML = enteredNum;
 };
 
@@ -70,19 +74,42 @@ const onOpBtn = (op) => {
     enteredNum = 0;
     disp2.innerHTML = 0;
   }
+  else if (op == "-") {
+    currTotal -= enteredNum;
+    disp1.innerHTML = `${currTotal}${op}`;
+    enteredNum = 0;
+    disp2.innerHTML = 0;
+  }
+  else if (op == "*") {
+    currTotal *= enteredNum;
+    disp1.innerHTML = `${currTotal}${op}`;
+    enteredNum = 0;
+    disp2.innerHTML = 0;
+  }
+  else if (op == "/") {
+    if (enteredNum == 0) {
+        alert("Zero division error!!");
+        return;
+    };
+    currTotal /= enteredNum;
+    disp1.innerHTML = `${currTotal}${op}`;
+    enteredNum = 0;
+    disp2.innerHTML = 0;
+  }
 };
 
 const onDecBtn = () => {
   disp2.innerHTML = enteredNum.toFixed(1);
   decimalMode = true;
+  divisor = 1;
 };
 
 acBtn.addEventListener("click", onClearBtn);
 delBtn.addEventListener("click", onDeleteBtn);
 percentBtn.addEventListener("click", onPercentBtn);
-// divBtn.addEventListener("click", onOpBtn);
-// mulBtn.addEventListener("click", onOpBtn);
-// subBtn.addEventListener("click", onOpBtn);
+// divBtn.addEventListener("click", onOpBtn.bind(this, "/"));
+// mulBtn.addEventListener("click", onOpBtn.bind(this, "*"));
+// subBtn.addEventListener("click", onOpBtn.bind(this, "-"));
 addBtn.addEventListener("click", onOpBtn.bind(this, "+"));
 decBtn.addEventListener("click", onDecBtn);
 eqBtn.addEventListener("click", onEqBtn);
