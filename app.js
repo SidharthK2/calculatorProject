@@ -22,34 +22,60 @@ const decBtn = allBtns[17];
 const eqBtn = allBtns[18];
 
 let enteredNum = 0;
+let currTotal = 0;
+let decimalMode = false;
 
 const onNumBtn = (num) => {
-  enteredNum = enteredNum * 10 + Number(num);
-  disp2.innerHTML = enteredNum; 
+  if (!decimalMode) {
+    enteredNum = enteredNum * 10 + Number(num);
+    disp2.innerHTML = enteredNum;
+  } else {
+    enteredNum = enteredNum + +num / 10;
+    disp2.innerHTML = enteredNum;
+  }
 };
 
 const onClearBtn = () => {
-    enteredNum = 0;
-    disp2.innerHTML = 0;
-    disp1.innerHTML = "";
+  enteredNum = 0;
+  currTotal = 0;
+  disp2.innerHTML = 0;
+  disp1.innerHTML = "";
+  decimalMode = false;
 };
 
 const onDeleteBtn = () => {
-    enteredNum = Math.trunc(enteredNum / 10);
-    disp2.innerHTML = enteredNum;
+  enteredNum = Math.trunc(enteredNum / 10);
+  disp2.innerHTML = enteredNum;
 };
 
 const onPercentBtn = () => {
-    enteredNum /= 100;
-    disp2.innerHTML = enteredNum;
+  enteredNum /= 100;
+  disp2.innerHTML = enteredNum;
+};
+
+const onEqBtn = () => {
+  if (disp1.innerHTML) {
+    const op = disp1.innerHTML.slice(-1);
+    onOpBtn(op);
+    disp2.innerHTML = currTotal;
+    disp1.innerHTML = 0;
+  }
 };
 
 const onOpBtn = (op) => {
-    disp1.innerHTML = `${disp2.innerHTML}${op}`
-    disp2.innerHTML = 0;
+  decimalMode = false;
+  if (op == "+") {
+    currTotal += enteredNum;
+    disp1.innerHTML = `${currTotal}${op}`;
     enteredNum = 0;
+    disp2.innerHTML = 0;
+  }
 };
 
+const onDecBtn = () => {
+  disp2.innerHTML = enteredNum.toFixed(1);
+  decimalMode = true;
+};
 
 acBtn.addEventListener("click", onClearBtn);
 delBtn.addEventListener("click", onDeleteBtn);
@@ -58,8 +84,8 @@ percentBtn.addEventListener("click", onPercentBtn);
 // mulBtn.addEventListener("click", onOpBtn);
 // subBtn.addEventListener("click", onOpBtn);
 addBtn.addEventListener("click", onOpBtn.bind(this, "+"));
-// decBtn.addEventListener("click", onOpBtn);
-// eqBtn.addEventListener("click", onEqBtn);
+decBtn.addEventListener("click", onDecBtn);
+eqBtn.addEventListener("click", onEqBtn);
 _0Btn.addEventListener("click", onNumBtn.bind(this, "0"));
 _1Btn.addEventListener("click", onNumBtn.bind(this, "1"));
 _2Btn.addEventListener("click", onNumBtn.bind(this, "2"));
